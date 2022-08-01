@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dosis:wght@300&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Books Shop</title>
+</head>
+
+<body onload="onInit()">
+    <h1>Books Shop</h1>
+
+
+    <div class="sort">
+        <h4>Sort:</h4>
+        <select onchange="onSortBy(this.value)">
+            <option value="NAME">Alphabetical</option>
+            <option value="PRICE">Price</option>
+            <option value="RATING">Rating</option>
+        </select>
+    </div>
+
+    <div class="filter">
+        <h5>Max price:</h5>
+        <input type="range" value="100" min="0" max="100" class="price-range"
+            onchange="this.title=this.value;onFilterBy({MAXPRICE: +this.value})" />
+        <h5>Min rating:</h5>
+        <input type="range" value="0" min="0" max="10" class="rate-range"
+            onchange="this.title=this.value;onFilterBy({MINRATE: +this.value})" />
+
+    </div>
+
+    <input class="search-box" oninput="onFilterBy({NAME: this.value})" type="text" placeholder="Search by book name:" />
+
+
+    <button onclick="onAddBook()" class="create-btn">Create New Book</button>
+
+    <section>
+        <table>
+            <thead>
+                <th>ID</th>
+                <th style="cursor: pointer;" onclick="onSortBy('NAME')">Title</th>
+                <th style="cursor: pointer;" onclick="onSortBy('RATING')">Rating</th>
+                <th style="cursor: pointer;" onclick="onSortBy('PRICE')">Price</th>
+                <th>Actions</th>
+
+            </thead>
+            <tbody class="books-table"></tbody>
+        </table>
+    </section>
+
+    <button onclick="onPrevPage()" class="prev-page">Prev page</button>
+    <button onclick="onNextPage()" class="next-page">Next page</button>
+
+
+    <div class="modal">
+        <p></p>
+        <h6>Rating:</h6>
+        <div class="rating"></div>
+    </div>
+
+    <script src="js/services/storage.service.js"></script>
+    <script src="js/services/utils.service.js"></script>
+    <script src="js/services/books.service.js"></script>
+    <script src="js/books.contoller.js"></script>
+</body>
+
+</html>
