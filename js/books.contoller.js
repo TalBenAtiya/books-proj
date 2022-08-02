@@ -2,10 +2,19 @@
 
 function onInit() {
     renderFilterByQueryStringParams()
-    loadFromStorage('booksDB')
     renderBooksTable()
-
+    const lang = initLang()
+    document.body.classList = lang
+    document.querySelector('.langs').value = lang
+    doTrans()
 }
+
+function onSetLang(lang) {
+    document.body.classList = lang
+    setLang(lang)
+    doTrans()
+}
+
 
 function renderBooksTable() {
     var books = getBooksForDisplay()
@@ -15,9 +24,9 @@ function renderBooksTable() {
             <td class="title">${book.title}</td>
             <td class="book-rate">${book.rating}</td>
             <td class="book-price">${book.price}$</td>
-            <td><button class="read-btn" onclick="onReadBook('${book.id}')">Read</button></td>
-            <td><button class="update-btn" onclick="onUpdateBook('${book.id}')">Update</button></td>
-            <td><button class="remove-btn" onclick="onRemoveBook('${book.id}')">Delete</button></td>
+            <td><button data-trans="read-btn" class="read-btn" onclick="onReadBook('${book.id}')">Read</button>
+            <button data-trans="update-btn" class="update-btn" onclick="onUpdateBook('${book.id}')">Update</button>
+            <button data-trans="remove-btn" class="remove-btn" onclick="onRemoveBook('${book.id}')">Delete</button></td>
         </tr>`).join('')
 
     document.querySelector('.books-table').innerHTML = strsHTML
@@ -32,25 +41,46 @@ function onReadBook(bookId) {
     var bookIdx = getBookIdx(bookId)
 
     const strHTML =
-   `<h3>${gBooks[bookIdx].title}</h3>
-   <button onclick="onCloseModal()" class="back">Back</button>
+        `<h3>${gBooks[bookIdx].title}</h3>
+   <button data-trans="back-btn" onclick="onCloseModal()" class="back">Back</button>
    <button onclick="onDecreaseRating('${bookId}')" class="minus">-</button>
    <div class="rating-num">${gBooks[bookIdx].rating}</div>
    <button onclick="onAddRating('${bookId}')" class="plus">+</button>`
     elRating.innerHTML = strHTML
+    doTrans()
 }
 
 function onRemoveBook(bookId) {
     removeBook(bookId)
     renderBooksTable()
+    flashMsgDelete()
 }
 
-function onAddBook() {
-    const title = prompt('Book title:')
-    const price = prompt('Book price:')
-    addBook(title, price)
-    renderBooksTable()
 
+function onAddBook(ev) {
+    ev.preventDefault()
+    const newBookName = document.querySelector('[name=new-book-name]').value
+    const newBookPrice = document.querySelector('[name=new-book-price').value
+
+    var newBook = addBook(newBookName, newBookPrice)
+   
+    onCloseNewBookModal()
+    if (newBook === undefined) return
+
+    renderBooksTable()
+    flashMsgAdd()
+    document.querySelector('[name=new-book-name]').value = ''
+    document.querySelector('[name=new-book-price').value = ''
+}
+
+function onOpenNewBookModal() {
+    const elModal = document.querySelector('.add-modal')
+    elModal.style.left = '35%'
+}
+
+function onCloseNewBookModal() {
+    const elModal = document.querySelector('.add-modal')
+    elModal.style.left = '135%'
 }
 
 function onCloseModal() {
@@ -80,18 +110,42 @@ function onSortBy(sortOpt) {
     renderBooksTable()
 }
 
-function onFilterBy(filterObj){
-   filterBy(filterObj)
-   
-   const filterSet = getSetFilter()
-   
-   const queryStringParams = `?MAXPRICE=${filterSet.MAXPRICE}&MINRATE=${filterSet.MINRATE}&NAME=${filterSet.NAME}`
-   const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
-   window.history.pushState({ path: newUrl }, '', newUrl)
-   renderBooksTable()
+function onFilterBy(filterObj) {
+    filterBy(filterObj)
+
+    const filterSet = getSetFilter()
+
+    const queryStringParams = `?MAXPRICE=${filterSet.MAXPRICE}&MINRATE=${filterSet.MINRATE}&NAME=${filterSet.NAME}`
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
+    window.history.pushState({ path: newUrl }, '', newUrl)
+    renderBooksTable()
 }
 
-function onNextPage(){
+function flashMsgDelete() {
+    const elFlashMsg = document.querySelector('.flash-msg')
+    elFlashMsg.innerHTML = `<span data-trans="flash-msg-del">Book Deleted!</span>`
+    elFlashMsg.style.left = '90%'
+    doTrans()
+    closeFlashMsg()
+}
+
+function flashMsgAdd() {
+    const elFlashMsg = document.querySelector('.flash-msg')
+    elFlashMsg.innerHTML = `<span data-trans="flash-msg-add">Book Added!</span>`
+    elFlashMsg.style.left = '90%'
+    doTrans()
+    closeFlashMsg()
+}
+
+
+function closeFlashMsg() {
+    setTimeout(() => {
+        const elFlashMsg = document.querySelector('.flash-msg')
+        elFlashMsg.style.left = '120%'
+    }, 1500)
+}
+
+function onNextPage() {
     nextPage()
     renderBooksTable()
 
@@ -99,7 +153,7 @@ function onNextPage(){
     elPrevBtn.removeAttribute('disabled')
 }
 
-function onPrevPage(){
+function onPrevPage() {
     prevPage()
     renderBooksTable()
 
@@ -112,24 +166,24 @@ function renderFilterByQueryStringParams() {
     const filterSet = {
         MAXPRICE: +queryStringParams.get('MAXPRICE') || 100,
         MINRATE: +queryStringParams.get('MINRATE') || 0,
-        NAME: queryStringParams.get('NAME')|| '',
+        NAME: queryStringParams.get('NAME') || '',
     }
     // if (!filterSet. MAXPRICE)
-    
+
     document.querySelector('.price-range').value = filterSet.MAXPRICE
     document.querySelector('.rate-range').value = filterSet.MINRATE
     document.querySelector('.search-box').value = filterSet.NAME
     onFilterBy(filterSet)
 }
 
-function disablePageBtn(pageIdx){
+function disablePageBtn(pageIdx) {
     console.log(pageIdx);
-    if (pageIdx <= 0){
+    if (pageIdx <= 0) {
         const elPrevBtn = document.querySelector('.prev-page')
         elPrevBtn.setAttribute('disabled', '')
     }
-    
-    if (pageIdx > 0){
+
+    if (pageIdx > 0) {
         const elNextBtn = document.querySelector('.next-page')
         elNextBtn.setAttribute('disabled', '')
     }

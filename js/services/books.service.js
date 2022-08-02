@@ -69,13 +69,26 @@ function updateBook(bookId, price) {
 }
 
 function addBook(title, price) {
-    if (title === '') return alert('Title cannot be empty')
-    if (isNaN(price)) return alert('Price input must be numeric value')
-    if (price > 100 || price < 10) return alert('Price must be between 10 to 100')
+    if (title === ''){
+        alert('Title cannot be empty')
+        return undefined
+    } 
+        
+    if (isNaN(price)){
+        alert('Price input must be numeric value')
+        return undefined
+    } 
+    
+    if (price > 100 || price < 10){
+        alert('Price must be between 10 to 100')
+        return undefined
+    } 
+        
 
     const newBook = _createBook(title, price)
     gBooks.unshift(newBook)
     _saveBooksToStorage()
+    return true
 }
 
 function removeBook(bookId) {

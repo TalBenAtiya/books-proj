@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    font-family: 'Assistant', sans-serif;
 
 }
 
@@ -8,46 +9,53 @@ body {
 }
 
 h1 {
-    margin-top: 5px;
+    font-family: 'Varela Round', sans-serif;
+    margin: 0;
     text-align: center;
-    font-family: 'Dosis', sans-serif;
-    font-weight: 1000px;
     font-size: 80px;
     color: #283739;
 }
 
-h4 {
-    margin: 0px;
-    margin-right: 5px;
-    display: inline-block;
-}
-
 h5 {
-    display: inline-block;
-    position: absolute;
-    bottom: 0px;
-    font-family: 'Dosis', sans-serif;
+    margin: 0;
 }
 
-.sort {
-    font-family: 'Dosis', sans-serif;
-    position: absolute;
-    top: 20.5%;
-    right: 15%;
-    margin-bottom: 10px;
-    border: 0;
-    color: #000000;
-    padding: 3px;
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 70%;
+    justify-content: space-between;
 }
 
-.filter {
-    position: absolute;
-    top: 15%;
-    left: 15%;
+h4 {
+    margin: 0;
 }
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.second-container {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin: 20px auto;
+    flex-wrap: wrap;
+}
+
+.create-btn {
+    font-weight: 800;
+    font-size: 1em;
+    background-color: #a2c11c;
+
+}
+
 
 button {
-    font-family: 'Dosis', sans-serif;
+
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -55,43 +63,32 @@ button {
     padding: 0.4em;
 }
 
-section {
-    position: absolute;
-    width: 70%;
-    top: 25%;
-    left: 15%;
-    font-family: 'Dosis', sans-serif;
+.table-container {
     font-weight: 600;
-}
-
-.create-btn {
-    position: absolute;
-    left: 15%;
-    top: 20%;
-    font-weight: 800;
-    font-size: 1em;
-    background-color: #a2c11c;
+    margin: 0;
+    margin-left: 15%;
+    margin-right: 15%;
 }
 
 
 table {
     background-color: #e0e0e0;
-    position: absolute;
     border-collapse: collapse;
     width: 100%;
 }
 
 td,
 th {
-    
+
     color: #000000;
     border: 1px solid #fdfdfd;
     text-align: center;
     padding: 8px;
+    min-width: none;
 }
 
 th {
-    font-size: 1.5em;
+    font-size: 1.2em;
     text-decoration: underline;
     padding: 20px;
 }
@@ -115,7 +112,6 @@ th {
 }
 
 .modal {
-    font-family: 'Dosis', sans-serif;
     color: #fdfdfd;
     padding: 10px;
     padding-bottom: 60px;
@@ -183,24 +179,7 @@ h6 {
     color: rgb(23, 151, 36);
 }
 
-.search-box {
-    left: 25%;
-    top: 20.5%;
-    position: absolute;
-    font-family: 'Dosis', sans-serif;
-}
 
-.next-page {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-}
-
-.prev-page {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-}
 
 h3 {
     display: block;
@@ -216,4 +195,78 @@ p {
     position: relative;
     top: 30px;
 
+}
+
+.search-box {
+    align-self: flex-end;
+}
+
+.page-btns {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.he {
+    direction: rtl;
+}
+
+.en{
+    direction: ltr;
+}
+
+.langs {
+    background-color: #a2c11c;
+    margin: 8px;
+}
+
+.add-modal{
+    transition: 0.5s;
+    position: absolute;
+    top: 25%;
+    left: 135%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: fit-content;
+    background-color: #a2c11c;
+    padding: 10px;
+    text-align: center;
+}
+
+.add-book-btn{
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.close-add-modal{
+    width: 20%;
+    background-color: transparent;
+}
+
+.flash-msg-add{
+    transition: 0.5s;
+    position: absolute;
+    left: 120%;
+    top: 50%;
+    background-color: #a2c11c;
+    width: fit-content;
+    height: fit-content;
+    padding: 8px;
+    border-radius: 0.4rem;
+}
+
+.flash-msg{
+    transition: 0.5s;
+    position: absolute;
+    left: 120%;
+    top: 50%;
+    background-color: #a2c11c;
+    width: fit-content;
+    height: fit-content;
+    padding: 8px;
+    border-radius: 0.4rem;
 }

@@ -4,68 +4,89 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dosis:wght@300&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <title>Books Shop</title>
 </head>
 
 <body onload="onInit()">
-    <h1>Books Shop</h1>
+    <select onchange="onSetLang(this.value)" class="langs">
+        <option data-trans="lang-en" value="en">English</option>
+        <option data-trans="lang-he" value="he">Hebrew</option>
+    </select>
+    <h1 data-trans="title">Books Shop</h1>
+    <section class="header-container">
+        <section class="filter-container">
+            <div class="filter">
+                <h5 data-trans="price-range">Max price:</h5>
+                <input type="range" value="100" min="0" max="100" class="price-range"
+                    onchange="this.title=this.value;onFilterBy({MAXPRICE: +this.value})" />
+                <h5 data-trans="rate-range">Min rating:</h5>
+                <input type="range" value="0" min="0" max="10" class="rate-range"
+                    onchange="this.title=this.value;onFilterBy({MINRATE: +this.value})" />
+            </div>
+        </section>
 
+        <section class="second-container">
+            <div class="creat-btn-container">
+                <button onclick="onOpenNewBookModal()" class="create-btn" data-trans="new-book-btn">Create New Book</button>
+            </div>
+            <div class="search-box">
+                <input data-trans="search-box" oninput="onFilterBy({NAME: this.value})" type="text" placeholder="Search by book name:" />
+            </div>
 
-    <div class="sort">
-        <h4>Sort:</h4>
-        <select onchange="onSortBy(this.value)">
-            <option value="NAME">Alphabetical</option>
-            <option value="PRICE">Price</option>
-            <option value="RATING">Rating</option>
-        </select>
-    </div>
+            <div class="sort">
+                <h4 data-trans="sort-title">Sort:</h4>
+                <select onchange="onSortBy(this.value)">
+                    <option data-trans="sort-name" value="NAME">Alphabetical</option>
+                    <option data-trans="sort-price" value="PRICE">Price</option>
+                    <option data-trans="sort-rate" value="RATING">Rating</option>
+                </select>
+            </div>
+        </section>
+    </section>
 
-    <div class="filter">
-        <h5>Max price:</h5>
-        <input type="range" value="100" min="0" max="100" class="price-range"
-            onchange="this.title=this.value;onFilterBy({MAXPRICE: +this.value})" />
-        <h5>Min rating:</h5>
-        <input type="range" value="0" min="0" max="10" class="rate-range"
-            onchange="this.title=this.value;onFilterBy({MINRATE: +this.value})" />
-
-    </div>
-
-    <input class="search-box" oninput="onFilterBy({NAME: this.value})" type="text" placeholder="Search by book name:" />
-
-
-    <button onclick="onAddBook()" class="create-btn">Create New Book</button>
-
-    <section>
+    <section class="table-container">
         <table>
             <thead>
-                <th>ID</th>
-                <th style="cursor: pointer;" onclick="onSortBy('NAME')">Title</th>
-                <th style="cursor: pointer;" onclick="onSortBy('RATING')">Rating</th>
-                <th style="cursor: pointer;" onclick="onSortBy('PRICE')">Price</th>
-                <th>Actions</th>
+                <th data-trans="th-id">ID</th>
+                <th data-trans="th-title" style="cursor: pointer;" onclick="onSortBy('NAME')">Title</th>
+                <th data-trans="th-rate" style="cursor: pointer;" onclick="onSortBy('RATING')">Rating</th>
+                <th data-trans="th-price" style="cursor: pointer;" onclick="onSortBy('PRICE')">Price</th>
+                <th data-trans="th-acts">Actions</th>
 
             </thead>
             <tbody class="books-table"></tbody>
         </table>
+        <div class="page-btns">
+            <button data-trans="prv-pg-btn" disabled onclick="onPrevPage()" class="prev-page">Prev page</button>
+            <button data-trans="nxt-pg-btn" onclick="onNextPage()" class="next-page">Next page</button>
+        </div>
     </section>
 
-    <button onclick="onPrevPage()" class="prev-page">Prev page</button>
-    <button onclick="onNextPage()" class="next-page">Next page</button>
+    <div class="flash-msg"></div>
 
 
     <div class="modal">
         <p></p>
-        <h6>Rating:</h6>
+        <h6 data-trans="modal-rate">Rating:</h6>
         <div class="rating"></div>
     </div>
-
+    <div class="add-modal">
+        <button onclick="onCloseNewBookModal()" class="close-add-modal">X</button>
+    <form onsubmit="onAddBook(event)">
+            <h5 data-trans="new-book-title">New book title:</h5>
+            <input data-trans="new-book-input-name" type="text" name="new-book-name" placeholder="Book title in english:">
+            <h5 data-trans="new-book-price">New book price:</h5>
+            <input data-trans="new-book-input-price" type="text" name="new-book-price" placeholder="Book price in $:">
+            <button data-trans="new-add-btn" class="add-book-btn">Add Book</button>
+        </form>
+    </div>
     <script src="js/services/storage.service.js"></script>
+    <script src="js/services/i18n.service.js"></script>
     <script src="js/services/utils.service.js"></script>
     <script src="js/services/books.service.js"></script>
     <script src="js/books.contoller.js"></script>
