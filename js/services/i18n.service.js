@@ -127,6 +127,7 @@ const gTrans = {
 
 function initLang(){
     gCurrLang = loadFromStorage('langDB')
+    if (!gCurrLang) gCurrLang = 'en'
     return gCurrLang
 }
 
